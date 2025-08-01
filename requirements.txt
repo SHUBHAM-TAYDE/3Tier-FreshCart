@@ -1,0 +1,9 @@
+# FreshCart/requirements.txt
+Django==4.2.0
+psycopg2-binary==2.9.9  # For PostgreSQL database adapter
+redis==5.0.1           # For Redis caching and session backend
+stripe==8.0.0          # Stripe API client library
+python-decouple==3.8   # For managing environment variables
+djangorestframework==3.14.0 # For building REST APIs (optional, but good for e-commerce)
+django-redis==5.4.0    # Django cache backend for Redis
+gunicorn==22.0.0       # WSGI HTTP Server for production deployment

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FreshCart - Process Payment{% endblock %}
+
+{% block extra_head %}
+    <!-- Stripe.js v3 -->
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
+{% block content %}
+<main class="container mx-auto py-8 px-4">
+    <h1 class="text-4xl font-bold text-gray-800 mb-8">Complete Your Payment</h1>
+
+    <div class="bg-white rounded-lg shadow-md p-6 max-w-lg mx-auto">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Order #{{ order.id }}</h2>
+        <p class="text-lg text-gray-700 mb-6">Amount Due: <span class="font-bold text-cyan-700">₹{{ order.get_total_cost }}</span></p>
+
+        <div id="payment-element">
+            <!-- Stripe will inject the Payment Element here -->
+        </div>
+        <button id="submit-payment" class="btn-primary bg-cyan-600 text-white py-3 px-8 rounded-full font-semibold shadow-md w-full mt-6">
+            Pay Now
+        </button>
+        <div id="payment-message" class="message-box hidden mt-4"></div>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const submitButton = document.getElementById('submit-payment');
+    const paymentMessage = document.getElementById('payment-message');
+    let stripe;
+    let elements;
+    let paymentElement;
+
+    try {
+        // Ensure Stripe.js v3 is loaded
+        if (typeof Stripe === 'undefined') {
+            throw new Error("Stripe.js v3 is not loaded. Please check your network connection or ad blockers.");
+        }
+
+        const publishableKey = "{{ stripe_publishable_key }}";
+        // Check if the publishable key is valid (not empty or 'None' string)
+        if (!publishableKey || publishableKey === 'None' || publishableKey.trim() === '') {
+            throw new Error("Stripe Publishable Key is missing or invalid in settings.");
+        }
+
+        stripe = Stripe(publishableKey);
+        elements = stripe.elements();
+        paymentElement = elements.create('payment');
+        paymentElement.mount('#payment-element');
+
+    } catch (e) {
+        console.error("Error initializing Stripe:", e.message);
+        if (paymentMessage) {
+            paymentMessage.classList.remove('hidden');
+            paymentMessage.classList.add('error');
+            paymentMessage.textContent = 'Payment system error: ' + e.message;
+        }
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+        // Prevent the rest of the script from running if Stripe initialization failed
+        // For a production app, you might want a more graceful fallback.
+        // For debugging, re-throwing helps ensure the error is caught.
+        // throw e; // Commenting out re-throw to allow page to load, but error will be in console.
+    }
+
+    // Only add event listener if Stripe was successfully initialized
+    if (stripe && submitButton) {
+        submitButton.addEventListener('click', async () => {
+            paymentMessage.classList.add('hidden');
+            paymentMessage.classList.remove('success', 'error');
+            paymentMessage.textContent = '';
+            submitButton.disabled = true; // Disable button to prevent multiple clicks
+
+            // 1. Create a PaymentIntent on your server
+            try {
+                const response = await fetch("{% url 'payments:process_payment' order.id %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token
+                    },
+                    body: JSON.stringify({}) // Send empty body, amount is handled server-side
+                });
+                const data = await response.json();
+
+                if (data.error) {
+                    paymentMessage.classList.remove('hidden');
+                    paymentMessage.classList.add('error');
+                    paymentMessage.textContent = data.error;
+                    submitButton.disabled = false;
+                    return;
+                }
+
+                const clientSecret = data.clientSecret;
+
+                // 2. Confirm the PaymentIntent on the client
+                const { error } = await stripe.confirmPayment({
+                    elements,
+                    clientSecret,
+                    confirmParams: {
+                        return_url: window.location.origin + "{% url 'orders:order_history' %}", // Redirect after success
+                    },
+                });
+
+                if (error) {
+                    paymentMessage.classList.remove('hidden');
+                    paymentMessage.classList.add('error');
+                    paymentMessage.textContent = error.message;
+                } else {
+                    // Payment succeeded, but the redirect will handle the success message
+                    // This block might not be reached if return_url is set.
+                }
+            } catch (e) {
+                paymentMessage.classList.remove('hidden');
+                paymentMessage.classList.add('error');
+                paymentMessage.textContent = 'An unexpected error occurred during payment processing.';
+                console.error('Payment processing error:', e);
+            } finally {
+                submitButton.disabled = false; // Re-enable button in case of client-side error
+            }
+        });
+    }
+</script>
+{% endblock %}

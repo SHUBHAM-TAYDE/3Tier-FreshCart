@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FreshCart - {{ product.name }}{% endblock %}
+
+{% block content %}
+<main class="container mx-auto py-8 px-4">
+    <div class="bg-white rounded-lg shadow-md p-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <!-- Product Image -->
+        <div class="flex justify-center">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}https://placehold.co/400x300/e0e0e0/555555?text=Product+Image{% endif %}" alt="{{ product.name }}" class="rounded-lg shadow-lg max-h-96 object-contain">
+        </div>
+
+        <!-- Product Details -->
+        <div>
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ product.name }}</h1>
+            <p class="text-gray-600 text-lg mb-4">{{ product.description }}</p>
+
+            <div class="flex items-center mb-6">
+                <span class="text-5xl font-extrabold text-cyan-700">₹{{ product.price }}</span>
+                {% if product.stock > 0 %}
+                    <span class="ml-4 px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">In Stock ({{ product.stock }} available)</span>
+                {% else %}
+                    <span class="ml-4 px-3 py-1 bg-red-100 text-red-800 text-sm font-semibold rounded-full">Out of Stock</span>
+                {% endif %}
+            </div>
+
+            <form action="{% url 'cart:add_to_cart' product.id %}" method="post" class="flex items-center space-x-4">
+                {% csrf_token %}
+                <label for="quantity" class="text-gray-700 font-medium">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" class="w-20 border rounded-md px-3 py-2 text-center input-field" {% if product.stock == 0 %}disabled{% endif %}>
+                <button type="submit" class="btn-primary bg-cyan-600 text-white font-semibold py-3 px-8 rounded-full shadow-md" {% if product.stock == 0 %}disabled{% endif %}>
+                    <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
+                </button>
+            </form>
+
+            <div class="mt-8 border-t border-gray-200 pt-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-3">Product Information</h3>
+                <ul class="text-gray-700 space-y-2">
+                    <li><span class="font-semibold">Category:</span> <a href="{% url 'products:product_list_by_category' product.category.slug %}" class="text-cyan-600 hover:underline">{{ product.category.name }}</a></li>
+                    <li><span class="font-semibold">Availability:</span> {% if product.available %}Available{% else %}Unavailable{% endif %}</li>
+                    <li><span class="font-semibold">Added On:</span> {{ product.created_at|date:"M d, Y" }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products Section (Optional) -->
+    <section class="mt-12 bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">You might also like...</h2>
+        <div class="relative">
+            <div id="related-products-slider" class="slider-container flex overflow-x-scroll scroll-smooth hide-scrollbar -mx-2 pb-4">
+                {% for related_product in product.category.products.all|slice:":5" %} {# Show products from the same category #}
+                    {% if related_product != product and related_product.available %}
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% if related_product.image %}{{ related_product.image.url }}{% else %}https://placehold.co/250x180/e0e0e0/555555?text=Product{% endif %}" alt="{{ related_product.name }}" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">{{ related_product.name }}</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ related_product.description|truncatechars:70 }}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹{{ related_product.price }}</span>
+                                    <form action="{% url 'cart:add_to_cart' related_product.id %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% empty %}
+                <p class="text-gray-600">No related products found.</p>
+                {% endfor %}
+            </div>
+            <!-- Slider Navigation Buttons -->
+            <button onclick="scrollSlider('related-products-slider', -280)" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -ml-4 focus:outline-none">
+                <i class="fas fa-chevron-left text-gray-700"></i>
+            </button>
+            <button onclick="scrollSlider('related-products-slider', 280)" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -mr-4 focus:outline-none">
+                <i class="fas fa-chevron-right text-gray-700"></i>
+            </button>
+        </div>
+    </section>
+
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Re-initialize slider functionality for the related products slider
+    // This is important if this template is loaded dynamically after initial page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const relatedProductsSlider = document.getElementById('related-products-slider');
+        if (relatedProductsSlider) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            relatedProductsSlider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                relatedProductsSlider.classList.add('active');
+                startX = e.pageX - relatedProductsSlider.offsetLeft;
+                scrollLeft = relatedProductsSlider.scrollLeft;
+            });
+
+            relatedProductsSlider.addEventListener('mouseleave', () => {
+                isDown = false;
+                relatedProductsSlider.classList.remove('active');
+            });
+
+            relatedProductsSlider.addEventListener('mouseup', () => {
+                isDown = false;
+                relatedProductsSlider.classList.remove('active');
+            });
+
+            relatedProductsSlider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - relatedProductsSlider.offsetLeft;
+                const walk = (x - startX) * 2; // Adjust scroll speed
+                relatedProductsSlider.scrollLeft = scrollLeft - walk;
+            });
+
+            // Touch events for mobile
+            relatedProductsSlider.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - relatedProductsSlider.offsetLeft;
+                scrollLeft = relatedProductsSlider.scrollLeft;
+            }, { passive: true }); // Use passive listener for better scroll performance
+
+            relatedProductsSlider.addEventListener('touchend', () => {
+                isDown = false;
+            });
+
+            relatedProductsSlider.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                const x = e.touches[0].pageX - relatedProductsSlider.offsetLeft;
+                const walk = (x - startX) * 2;
+                relatedProductsSlider.scrollLeft = scrollLeft - walk;
+            });
+        }
+    });
+
+    // The global scrollSlider function is defined in main.js, which base.html loads.
+    // So, it's available here without re-defining it.
+</script>
+{% endblock %}

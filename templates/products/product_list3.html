@@ -1,0 +1,597 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}FreshCart - Home{% endblock %}
+
+{% block content %}
+<main class="container mx-auto py-8 px-4">
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-cyan-600 to-emerald-400 text-white rounded-lg p-8 mb-12 shadow-lg flex flex-col md:flex-row items-center justify-between">
+        <div class="text-center md:text-left mb-6 md:mb-0">
+            <h1 class="text-4xl font-extrabold mb-3">Fresh Groceries, Delivered Fast!</h1>
+            <p class="text-lg opacity-90">Shop from a wide range of products at unbeatable prices.</p>
+            <button class="mt-6 bg-white text-cyan-700 font-semibold py-3 px-8 rounded-full shadow-md hover:bg-gray-100 transition duration-300">
+                Shop Now
+            </button>
+        </div>
+        <div class="md:w-1/3 w-full flex justify-center">
+            <!-- Image for "Fresh Produce" section -->
+            <img src="https://placehold.co/300x200/a7f3d0/065f46?text=Fresh+Produce+Basket" alt="Fresh Produce Basket" class="rounded-lg shadow-xl">
+        </div>
+    </section>
+
+    <!-- Product Sliders Section -->
+    <section class="space-y-12">
+
+        <!-- Slider 1: Bestsellers -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">🔥 Bestsellers</h2>
+            <div class="relative">
+                <div id="bestsellers-slider" class="slider-container flex flex-nowrap overflow-x-scroll scroll-smooth hide-scrollbar -mx-2 pb-4">
+                    <!-- Product Card 1 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            {# Changed to directly use product.image.url. If no image, it will show a broken image icon. #}
+                            <img src="{% static 'img/placeholder.png' %}" alt="Banana" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Organic Bananas (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Fresh, ripe, and delicious organic bananas.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹40</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Biscuit" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Assorted Biscuits (200g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Crispy and delicious assorted biscuits, perfect with tea.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹22</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Cake" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Blueberry Cheesecake (500g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Rich and creamy blueberry cheesecake.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹300</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Chips" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Potato Chips (Large Pack)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Crispy salted potato chips for a perfect snack.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹15</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 5 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Chocolates" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Premium Chocolate Box</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Assorted premium chocolates, great for gifting.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹50</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 6 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Coffee" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Instant Coffee (100g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Rich and aromatic instant coffee powder.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹190</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 7 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Juice" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Orange Juice (1 Litre)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Freshly squeezed orange juice, no added sugar.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹110</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 8 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Pasta" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Durum Wheat Pasta (500g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">High-quality durum wheat pasta, quick cooking.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹85</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 9 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Soap" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Hand Soap (Liquid 250ml)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Gentle and effective liquid hand soap.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹75</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 10 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Cereal" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Breakfast Cereal (500g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Healthy and delicious breakfast cereal.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹220</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 11 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Bread" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Brown Bread (400g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Nutritious brown bread, perfect for sandwiches.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹45</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 12 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Cheese" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Cheddar Cheese (200g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Delicious cheddar cheese block.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹250</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 13 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Yogurt" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Plain Yogurt (500g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Creamy plain yogurt, great for health.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹90</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 14 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Butter" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Salted Butter (100g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Rich salted butter for cooking and baking.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹80</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 15 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Jam" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Mixed Fruit Jam (250g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Sweet mixed fruit jam for your breakfast.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹100</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slider Navigation Buttons -->
+                <button onclick="scrollSlider('bestsellers-slider', -280)" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -ml-4 focus:outline-none">
+                    <i class="fas fa-chevron-left text-gray-700"></i>
+                </button>
+                <button onclick="scrollSlider('bestsellers-slider', 280)" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -mr-4 focus:outline-none">
+                    <i class="fas fa-chevron-right text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Slider 2: Daily Essentials -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">🛒 Daily Essentials</h2>
+            <div class="relative">
+                <div id="essentials-slider" class="slider-container flex flex-nowrap overflow-x-scroll scroll-smooth hide-scrollbar -mx-2 pb-4">
+                    <!-- Product Card 1 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Essential 1" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Eggs (Pack of 6)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Farm fresh eggs, perfect for breakfast.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹70</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Essential 2" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Sugar (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Granulated white sugar for all your sweet needs.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹45</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Essential 3" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Tea Powder (250g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Premium blend tea powder for a refreshing cup.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹120</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Essential 4" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Salt (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Iodized common salt for daily cooking.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹25</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 5 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Essential 5" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Dal (Toor Dal 500g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">High-quality Toor Dal, essential for Indian cuisine.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹90</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 6 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Rice" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Basmati Rice (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Premium long-grain Basmati rice.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹80</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 7 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Oil" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Sunflower Oil (1L)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Healthy and light cooking oil.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹150</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 8 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Flour" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Wheat Flour (5kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Finely ground wheat flour for baking.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹200</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slider Navigation Buttons -->
+                <button onclick="scrollSlider('essentials-slider', -280)" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -ml-4 focus:outline-none">
+                    <i class="fas fa-chevron-left text-gray-700"></i>
+                </button>
+                <button onclick="scrollSlider('essentials-slider', 280)" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -mr-4 focus:outline-none">
+                    <i class="fas fa-chevron-right text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Slider 3: Fresh Produce -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">🍎 Fresh Produce</h2>
+            <div class="relative">
+                <div id="produce-slider" class="slider-container flex flex-nowrap overflow-x-scroll scroll-smooth hide-scrollbar -mx-2 pb-4">
+                    <!-- Product Card 1 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Tomato" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Tomatoes (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Farm-fresh, ripe red tomatoes.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹40</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 2 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Potato" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Potatoes (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Versatile and essential potatoes.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹30</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 3 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Onion" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Onions (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Fresh onions for all your culinary needs.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹35</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 4 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Banana" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Bananas (1 Dozen)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Ripe and sweet bananas, great for a quick snack.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹60</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product Card 5 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Cucumber" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Cucumbers (500g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Crisp and refreshing cucumbers for salads.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹25</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 6 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Spinach" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Spinach (500g)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Fresh green spinach, rich in iron.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹30</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- New Product Card 7 -->
+                    <div class="product-card flex-none w-64 p-2">
+                        <div class="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100">
+                            <img src="{% static 'img/placeholder.png' %}" alt="Carrot" class="w-full h-40 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2 truncate">Carrots (1kg)</h3>
+                                <p class="text-gray-600 text-sm mb-3 line-clamp-2">Sweet and crunchy carrots.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xl font-bold text-cyan-700">₹45</span>
+                                    <button class="btn-primary bg-cyan-600 text-white py-2 px-4 rounded-full text-sm">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slider Navigation Buttons -->
+                <button onclick="scrollSlider('produce-slider', -280)" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -ml-4 focus:outline-none">
+                    <i class="fas fa-chevron-left text-gray-700"></i>
+                </button>
+                <button onclick="scrollSlider('produce-slider', 280)" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-3 rounded-full shadow-md z-10 -mr-4 focus:outline-none">
+                    <i class="fas fa-chevron-right text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Call to Action / Categories Section -->
+    <section class="mt-12 bg-cyan-100 rounded-lg p-8 text-center shadow-md">
+        <h2 class="text-3xl font-bold text-cyan-800 mb-4">Explore Our Wide Range of Categories</h2>
+        <p class="text-gray-700 mb-8">From fresh produce to home essentials, find everything you need in one place.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300 transform hover:scale-105 cursor-pointer">
+                <i class="fas fa-carrot text-4xl text-orange-500 mb-3"></i>
+                <h3 class="font-semibold text-lg">Fruits & Vegetables</h3>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300 transform hover:scale-105 cursor-pointer">
+                <i class="fas fa-bread-slice text-4xl text-yellow-700 mb-3"></i>
+                <h3 class="font-semibold text-lg">Bakery & Dairy</h3>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300 transform hover:scale-105 cursor-pointer">
+                <i class="fas fa-utensils text-4xl text-blue-500 mb-3"></i>
+                <h3 class="font-semibold text-lg">Staples & Pulses</h3>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition duration-300 transform hover:scale-105 cursor-pointer">
+                <i class="fas fa-soap text-4xl text-green-600 mb-3"></i>
+                <h3 class="font-semibold text-lg">Home Care</h3>
+            </div>
+        </div>
+        <button class="mt-8 bg-cyan-700 text-white font-semibold py-3 px-8 rounded-full shadow-md hover:bg-cyan-800 transition duration-300">
+            View All Categories
+        </button>
+    </section>
+
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // This script block should contain the slider logic, as it's specific to this page.
+    // The global scrollSlider function is available because base.html loads main.js.
+
+    // Add touch swipe functionality for sliders
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.slider-container').forEach(slider => {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                slider.classList.add('active');
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+                slider.classList.remove('active');
+            });
+
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+                slider.classList.remove('active');
+            });
+
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2; // Adjust scroll speed
+                slider.scrollLeft = scrollLeft - walk;
+            });
+
+            // Touch events for mobile
+            slider.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            }, { passive: true }); // Use passive listener for better scroll performance
+
+            slider.addEventListener('touchend', () => {
+                isDown = false;
+            });
+
+            slider.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                const x = e.touches[0].pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2;
+                slider.scrollLeft = scrollLeft - walk;
+            });
+        });
+
+        // Optional: Implement keyboard navigation for sliders (arrow keys)
+        document.addEventListener('keydown', (event) => {
+            const activeSlider = document.querySelector('.slider-container:hover'); // Check if a slider is hovered
+            if (activeSlider) {
+                if (event.key === 'ArrowLeft') {
+                    activeSlider.scrollBy({ left: -280, behavior: 'smooth' });
+                } else if (event.key === 'ArrowRight') {
+                    activeSlider.scrollBy({ left: 280, behavior: 'smooth' });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
